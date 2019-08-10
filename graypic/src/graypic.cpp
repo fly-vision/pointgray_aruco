@@ -28,10 +28,10 @@ int main(int argc, char **argv)
   ros::NodeHandle nh_("~");
   if(!nh_.ok())return 0;
 
-  int width_, height_;
+  //int width_, height_;
   string camera_frame_id_("head_camera");
 
-  ros::Publisher imgPub = nh_.advertise<sensor_msgs::Image>("image_raw", 1000);
+  ros::Publisher imgPub = nh_.advertise<sensor_msgs::Image>("image_raw", 10);
 
   //image_transport::ImageTransport it(nh_);
   //ros::advertis imgPub = it.advertiseCamera("image_raw", 10);
@@ -39,11 +39,10 @@ int main(int argc, char **argv)
   //nh_.param<int>("image_width", width_, 640);
   //nh_.param<int>("image_height", height_, 480);
   //nh_.param("camera_frame_id", camera_frame_id_, std::string("head_camera"));
-  width_=640;
-  height_=480;
+  //width_=640;
+  //height_=480;
 
-
-  // check for default camera info
+  //check for default camera info
 
   //connect camera
   Error error;
@@ -60,34 +59,37 @@ int main(int argc, char **argv)
   cv::Mat cvImage;
   Image rawImage, convertedImage;
 
-  ros::Rate loop_rate(100);
+  ros::Rate loop_rate(200);
+  bool init_(true);
   while (ros::ok())
   {
     
-      cam.RetrieveBuffer(&rawImage);
-      rawImage.Convert(PIXEL_FORMAT_BGR, &convertedImage);
-      unsigned int rowBytes = (double)convertedImage.GetReceivedDataSize()/(double)convertedImage.GetRows();
-      cvImage = cv::Mat( convertedImage.GetRows(), convertedImage.GetCols(), CV_8UC3, convertedImage.GetData(), rowBytes );
-      //cv::imshow("i am die", cvImage ); 
-      //cv::waitKey(30);
-      cv_bridge::CvImage out_msg;
-      out_msg.header.stamp=ros::Time::now();
-      out_msg.header.frame_id=camera_frame_id_;
-      out_msg.encoding=sensor_msgs::image_encodings::BGR8;
-      out_msg.image=cvImage;
+    cam.RetrieveBuffer(&rawImage);
+    rawImage.Convert(PIXEL_FORMAT_BGR, &convertedImage);
+    unsigned int rowBytes = (double)convertedImage.GetReceivedDataSize() / (double)convertedImage.GetRows();
+    cvImage = cv::Mat(convertedImage.GetRows(), convertedImage.GetCols(), CV_8UC3, convertedImage.GetData(), rowBytes);
+    
+    if (init_)
+    {
+      cout << "INIT: Image Resolution: (" << cvImage.cols << ", " << cvImage.rows << ")" << endl;
+      init_ = false;
+    }
+    cv_bridge::CvImage out_msg;
+    out_msg.header.stamp=ros::Time::now();
+    out_msg.header.frame_id=camera_frame_id_;
+    out_msg.encoding=sensor_msgs::image_encodings::BGR8;
+    out_msg.image=cvImage;
 
-      sensor_msgs::Image img_;
-      out_msg.toImageMsg(img_);
+    sensor_msgs::Image img_;
+    out_msg.toImageMsg(img_);
 
-      imgPub.publish(img_);
+    imgPub.publish(img_);
 
     ros::spinOnce();
-
     loop_rate.sleep();
   }
-cam.StopCapture();
-   
-cam.Disconnect();
+  cam.StopCapture();
+  cam.Disconnect();
 
   return 0;
 }
