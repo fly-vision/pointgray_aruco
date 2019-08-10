@@ -5,6 +5,8 @@ This ros package read graypoint camera CM3-U3-13Y3C-CS and publish color picture
 ### download flycapture
 download link [flycapture](https://flir.app.boxcn.net/v/Flycapture2SDK), choose your adaptable version.
 
+select Linux/flycapture2-2.13.3.31-amd64-pkg_xenial.tgz
+
 ### install capture depandencies (Ubuntu 16.04)
 ```
     sudo apt-get install libraw1394-11 libavcodec-ffmpeg56 libavformat-ffmpeg56 libswscale-ffmpeg3 libswresample-ffmpeg1 libavutil-ffmpeg54 libgtkmm-2.4-dev libglademm-2.4-dev libgtkglextmm-x11-1.2-dev libusb-1.0-0
@@ -26,5 +28,5 @@ copy graypic ROS package to your ~/catkin_ws/src
 
 ## rostopic 
  
-## /graypic/image_raw
+### /graypic/image_raw
 This is the picture this ros node published
