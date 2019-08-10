@@ -3,7 +3,7 @@ This ros package read graypoint camera CM3-U3-13Y3C-CS and publish color picture
 ## install flycapture
 
 ### download flycapture
- download link [flycapture]("https://flir.app.boxcn.net/v/Flycapture2SDK"), choose your adaptable version.
+download link [flycapture](https://flir.app.boxcn.net/v/Flycapture2SDK), choose your adaptable version.
 
 ### install capture depandencies (Ubuntu 16.04)
 ```
