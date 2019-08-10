@@ -4,8 +4,10 @@ This ros package read graypoint camera CM3-U3-13Y3C-CS and publish color picture
 
 ### download flycapture
 Download link [flycapture](https://flir.app.boxcn.net/v/Flycapture2SDK), choose your adaptable version.
+
 For Ubuntu 16.04:
 Select Linux/flycapture2-2.13.3.31-amd64-pkg_xenial.tgz
+
 For Ubuntu 18.04:
 Select Linux/flycapture2-2.13.3.31-amd64-pkg_bionic.tgz
 
