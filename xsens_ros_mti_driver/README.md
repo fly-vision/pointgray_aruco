@@ -28,4 +28,4 @@ Launch the Xsens MTi driver from your catkin workspace:
 roslaunch xsens_mti_driver xsens_mti_node.launch
 ```
 ### ros topic
-The ROS topic of imu date is /imu/data
+The ROS topic of imu date is */imu/data*
