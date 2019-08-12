@@ -53,13 +53,8 @@ groups
 cd /etc/udev/rules.d
 sudo touch 99-custom.rules
 ```
-打开99-custom.rules,
-```
-sudo vim 99-custom.rules
-```
-添加
-```
-SUBSYSTEM=="tty", ATTRS{idVendor}=="2639", ACTION=="add", GROUP="$GROUP", MODE="0660"
-```
+打开99-custom.rules添加
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="2639", ACTION=="add", GROUP="**$GROUP**", MODE="0660"
+
 
 
