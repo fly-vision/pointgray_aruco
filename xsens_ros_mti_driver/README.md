@@ -1,6 +1,13 @@
 ## xsens_ros_mti_driver
 这个ros软件包是用来读取Mti-G-710惯导元件的数据，并发布一个ros的IMU消息
 ### dependencies
+download  MT [Software Suite](https://content.xsens.com/download-mt-software-suite?submissionGuid=91b5871c-588d-4fab-ae70-30728242d607),choose Linux. Extract the downloaded installation package(/home/alan/Downloads/MT_Software_Suite_linux-x64_2019.tar.gz), execute the mtsdk_linux-x##_####.#.sh
+```
+cd  {MT_software_folder}
+sudo apt-get install sharutils
+sudo sh mtsdk_linux-x64_2019.0.1.sh
+```
+others:
     - ROS Kinetic or Melodic
     - C/C++ Compiler: GCC 5.4.0 or MSVC 14.0
     - C++11
