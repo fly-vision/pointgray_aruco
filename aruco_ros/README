@@ -1,3 +1,8 @@
-fsdafsdsadda
-For full info about the library please go to 
-https://www.uco.es/investiga/grupos/ava/node/26
+## aruco ros
+
+### subscribed message
+/graypic/image_raw
+
+### published message
+/aruco/detection_vis
+/aruco/markers
