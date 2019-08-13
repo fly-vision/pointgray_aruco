@@ -64,17 +64,20 @@ void onFrame(const sensor_msgs::ImageConstPtr& msg)
         // for each marker, draw info and its boundaries in the image
         for (unsigned int i = 0; i < Markers.size(); i++)
         {
+            if (!Markers.at(i).Rvec.empty())
+            {
             aruco::MarkerMsg& marker_i = marker_msg_->markers.at(i);
             marker_i.header.stamp = curr_stamp;
             marker_i.id = Markers.at(i).id;
             marker_i.confidence = 1.0;
 
-            marker_i.pose.position.x = Markers[i].Tvec.at<float>(0);
-            marker_i.pose.position.y = Markers[i].Tvec.at<float>(1);
-            marker_i.pose.position.z = Markers[i].Tvec.at<float>(2);
-            marker_i.pose.orientation.x = Markers[i].Rvec.at<float>(0);
-            marker_i.pose.orientation.y = Markers[i].Rvec.at<float>(1);
-            marker_i.pose.orientation.z = Markers[i].Rvec.at<float>(2);
+            marker_i.pose.position.x = Markers.at(i).Tvec.at<float>(0);
+            marker_i.pose.position.y = Markers.at(i).Tvec.at<float>(1);
+            marker_i.pose.position.z = Markers.at(i).Tvec.at<float>(2);
+            marker_i.pose.orientation.x = Markers.at(i).Rvec.at<float>(0);
+            marker_i.pose.orientation.y = Markers.at(i).Rvec.at<float>(1);
+            marker_i.pose.orientation.z = Markers.at(i).Rvec.at<float>(2);
+            }
 
             // cout << Markers[i] << endl;
             Markers[i].draw(InImage, Scalar(0, 0, 255), 2);
