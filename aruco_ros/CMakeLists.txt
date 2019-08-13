@@ -13,8 +13,11 @@ set(CMAKE_CXX_EXTENSIONS ON) #...with compiler extensions like gnu++11
 
 
 #Packages
-find_package(catkin REQUIRED COMPONENTS	cv_bridge roscpp std_msgs message_generation image_transport)
+find_package(catkin REQUIRED COMPONENTS	cv_bridge roscpp std_msgs message_generation image_transport roslib)
 find_package(OpenCV REQUIRED)
+
+add_message_files(FILES MarkerMsg.msg MarkerArray.msg)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 include(cmake/options.cmake)
 include(cmake/findDependencies.cmake)
