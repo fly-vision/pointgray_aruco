@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   //int width_, height_;
   string camera_frame_id_("head_camera");
 
-  ros::Publisher imgPub = nh_.advertise<sensor_msgs::Image>("image_raw", 10);
+  ros::Publisher imgPub = nh_.advertise<sensor_msgs::Image>("/graypic/image_raw", 10);
 
   //image_transport::ImageTransport it(nh_);
   //ros::advertis imgPub = it.advertiseCamera("image_raw", 10);
