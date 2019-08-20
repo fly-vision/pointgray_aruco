@@ -36,3 +36,13 @@ rosrun aruco aruco_ros
 # /aruco/detection_vis   二维码检测可视化
 # /aruco/markers    二维码消息，位置、姿态、编号
 ```
+
+# 运行 ekf_slam3D_ljn.py
+按照要求安装fly-vision/xsens_ros_mti_driver
+然后依次运行
+```
+roslaunch xsens_mti_driver xsens_mti_node.launch
+rosrun graypic graypic
+rosrun aruco aruco_ros
+python ekf_slam3D_ljn.py
+```
