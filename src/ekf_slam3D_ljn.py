@@ -19,7 +19,7 @@ class ekf_slam:
         #init stuff
         #get stuff
 
-        self.num_landmarks = 12
+        self.num_landmarks = 25
 
         # Estimator stuff
         # x = pn, pe, pd, phi, theta, psi
@@ -91,7 +91,7 @@ class ekf_slam:
         self.groundtruth_path = Path()
 
         self.estimate_pub_ = rospy.Publisher('/ekf_estimate', Odometry, queue_size=10)
-        self.pub1_ = rospy.Publisher("/ekf_estimate/path", Path, queue_size=1000)
+        self.pub1_ = rospy.Publisher("/ekf_estimate/path", Path, queue_size=10)
         
 
         # # Init Timer
@@ -246,7 +246,7 @@ class ekf_slam:
             residual[1] += 2*np.pi
 
         print "Location:", self.xhat[9+3*lndmark:12+3*lndmark]
-        print "True Location:", self.aruco_location[self.aruco_id]
+        #print "True Location:", self.aruco_location[self.aruco_id]
 
         dist = residual.T.dot(np.linalg.inv(S)).dot(residual)[0,0]
         if True:
