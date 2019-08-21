@@ -24,7 +24,7 @@ class ekf_slam:
         # Estimator stuff
         # x = pn, pe, pd, phi, theta, psi
         self.xhat = np.zeros((9 + 3*self.num_landmarks, 1))
-        self.xhat_odom = Odometry()
+        # self.xhat_odom = Odometry()
 
         # Covariance matrix
         self.P = np.zeros((9 + 3*self.num_landmarks, 9 + 3*self.num_landmarks))
@@ -272,29 +272,30 @@ class ekf_slam:
     def pub_est(self):
 
         # pack up estimate to ROS msg and publish
-        self.xhat_odom.header.stamp = rospy.Time.now()
-        self.xhat_odom.header.frame_id="world"
-        self.xhat_odom.child_frame_id="world"
-        self.xhat_odom.pose.pose.position.x = self.xhat[0] # pn
-        self.xhat_odom.pose.pose.position.y = self.xhat[1] # pe
-        self.xhat_odom.pose.pose.position.z = self.xhat[2] # pd
+        xhat_odom = Odometry()
+        xhat_odom.header.stamp = rospy.Time.now()
+        xhat_odom.header.frame_id="world"
+        xhat_odom.child_frame_id="world"
+        xhat_odom.pose.pose.position.x = self.xhat[0] # pn
+        xhat_odom.pose.pose.position.y = self.xhat[1] # pe
+        xhat_odom.pose.pose.position.z = self.xhat[2] # pd
 
         quat = tf.transformations.quaternion_from_euler(self.xhat[6].copy(), self.xhat[7].copy(), self.xhat[8].copy())
 
-        self.xhat_odom.pose.pose.orientation.x = quat[0]
-        self.xhat_odom.pose.pose.orientation.y = quat[1]
-        self.xhat_odom.pose.pose.orientation.z = quat[2]
-        self.xhat_odom.pose.pose.orientation.w = quat[3]
-        self.xhat_odom.twist.twist.linear.x = self.xhat[3] # u
-        self.xhat_odom.twist.twist.linear.y = self.xhat[4] # v
-        self.xhat_odom.twist.twist.linear.z = self.xhat[5] # w
+        xhat_odom.pose.pose.orientation.x = quat[0]
+        xhat_odom.pose.pose.orientation.y = quat[1]
+        xhat_odom.pose.pose.orientation.z = quat[2]
+        xhat_odom.pose.pose.orientation.w = quat[3]
+        xhat_odom.twist.twist.linear.x = self.xhat[3] # u
+        xhat_odom.twist.twist.linear.y = self.xhat[4] # v
+        xhat_odom.twist.twist.linear.z = self.xhat[5] # w
 
-        self.estimate_pub_.publish(self.xhat_odom)
+        self.estimate_pub_.publish(xhat_odom)
         pose_temp=PoseStamped()       
-        pose_temp.header=self.xhat_odom.header
-        pose_temp.pose=self.xhat_odom.pose.pose
+        pose_temp.header=xhat_odom.header
+        pose_temp.pose=xhat_odom.pose.pose
 
-        self.groundtruth_path.header = self.xhat_odom.header
+        self.groundtruth_path.header = pose_temp.header
         self.groundtruth_path.poses.append(pose_temp)
         self.pub1_.publish(self.groundtruth_path)
 
