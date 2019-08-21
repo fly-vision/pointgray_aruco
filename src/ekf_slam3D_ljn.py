@@ -83,8 +83,7 @@ class ekf_slam:
 
         # ROS Stuff
         # Init subscribers
-        self.free_sub = rospy.Subscriber('/filter/free_acceleration', Vector3Stamped, self.free_callback)
-        self.imu_sub_ = rospy.Subscriber('/imu/data', Imu, self.imu_callback)
+        self.imu_sub_ = rospy.Subscriber('/imu/prodata', Imu, self.imu_callback)
         self.aruco_sub = rospy.Subscriber('/aruco/markers', MarkerArray, self.aruco_meas_callback )
 
         # Init publishers
@@ -92,7 +91,7 @@ class ekf_slam:
         self.groundtruth_path = Path()
 
         self.estimate_pub_ = rospy.Publisher('/ekf_estimate', Odometry, queue_size=10)
-        self.pub1 = rospy.Publisher("/ekf_estimate/path", Path, queue_size=10)
+        self.pub1_ = rospy.Publisher("/ekf_estimate/path", Path, queue_size=1000)
         
 
         # # Init Timer
@@ -192,7 +191,8 @@ class ekf_slam:
 
         # If never seen before
         if self.xhat[9+3*lndmark] == 0.0:
-            # Init location of Landmark
+            # Init location of Landmark 
+            ###aurco in G-IMU frame
             self.xhat[9+3*lndmark] = self.xhat[0] + self.range*cos(self.bearing + self.xhat[8])*cos(self.elevation) # pn
             self.xhat[10+3*lndmark] = self.xhat[1] + self.range*sin(self.bearing + self.xhat[8])*cos(self.elevation) # pe
             self.xhat[11+3*lndmark] = self.xhat[2] + self.range*sin(self.elevation)
@@ -296,17 +296,10 @@ class ekf_slam:
 
         self.groundtruth_path.header = self.xhat_odom.header
         self.groundtruth_path.poses.append(pose_temp)
-        self.pub1.publish(self.groundtruth_path)
+        self.pub1_.publish(self.groundtruth_path)
 
 
     # Callback Functions
-    def free_callback(self, msg):
-        self.acce_x = msg.vector.x
-        self.acce_y = msg.vector.y
-        self.acce_z = msg.vector.z
-
-
-
     def imu_callback(self, msg):
 
         # Map msg to class variables
@@ -324,6 +317,10 @@ class ekf_slam:
         self.imu_ax = msg.linear_acceleration.x
         self.imu_ay = msg.linear_acceleration.y
         self.imu_az = msg.linear_acceleration.z
+        # free accelerate
+        self.acce_x = msg.orientation.x
+        self.acce_y = msg.orientation.y
+        self.acce_z = msg.orientation.z
 
         if (self.prev_time != 0.0):
             dt = time - self.prev_time
