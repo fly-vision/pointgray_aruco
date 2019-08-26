@@ -37,6 +37,8 @@ rosrun aruco aruco_ros
 # /aruco/markers    二维码消息，位置、姿态、编号
 ```
 
+# 运行
+
 # 运行 ekf_slam3D_ljn.py
 按照要求安装fly-vision/xsens_ros_mti_driver
 然后依次运行
@@ -45,4 +47,15 @@ roslaunch xsens_mti_driver xsens_mti_node.launch
 rosrun graypic graypic
 rosrun aruco aruco_ros
 python ekf_slam3D_ljn.py
+```
+# 运行 Odometry_pub.py
+Odometry_pub根据aurco信息计算UAV的位置信息,其中无人机坐标系为相机坐标系的z轴指向下,二维码分布的坐标系为北东天的左手系,输出的位置的坐标系为的东北天
+接收消息
+```
+/aruco/markers
+```
+发布消息
+```
+/ekf_estimate/path
+/ekf_estimate/path
 ```
